@@ -1,0 +1,9 @@
+.panel.panel-danger
+  .panel-heading
+    h4
+      = @title
+      small.pull-right &nbsp;HTTP error #{@code}
+  .panel-body: h3.message = @message
+
+  - if @exception
+    pre.code = @exception.backtrace.join("\n")

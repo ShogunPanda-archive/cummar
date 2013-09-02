@@ -1,0 +1,7 @@
+.panel.panel-warning
+  .panel-heading
+    h4
+      | Debug info
+      small.pull-right &nbsp;HTTP error #{@code}
+  .panel-body
+    pre.code = @exception.message

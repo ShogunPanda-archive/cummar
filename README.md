@@ -1,6 +1,6 @@
 # Introduction
 
-A small application to import Facebook and Twitter contacts into OSX address book.
+A small application to merge your friends' social profiles contacts into OSX address book.
 
 http://sw.cow.tc/cummar
 
@@ -10,11 +10,11 @@ You need to install [MacRuby](http://www.macruby.org), then run `bundle install`
 
 ## Usage
 
-cummary allows you to add Facebook and Twitter information to your OSX Address Book contacts.
+First of all edit the file `cummar.yml` to insert your applications' API pairs.
 
 Launch the application:
 
-`./bin/cummar [facebook|twitter]`
+`./bin/cummar`
 
 and then continue in your browser.
 

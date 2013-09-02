@@ -1,18 +1,38 @@
 #!/usr/bin/env ruby
-# encoding: utf-8
 #
-# Copyright (C) 2013 and above Shogun <shogun@cowtech.it>.
+# This file is part of cummar. Copyright (C) 2013 and above Shogun <shogun@cowtech.it>.
 # Licensed under the MIT license, which can be found at http://www.opensource.org/licenses/mit-license.php.
 #
 
-framework "AddressBook"
-basepath = File.dirname(__FILE__)
+require "yaml"
+require "fileutils"
+require "active_support/core_ext"
+require "moneta"
 
-require "rubygems"
-require "active_support/all"
-require "tempfile"
+require "omniauth-facebook"
+require "omniauth-twitter"
+require "omniauth-linkedin"
+require "omniauth-google-oauth2"
+require "omniauth-instagram"
 
-require basepath + "/cummar/contact"
-require basepath + "/cummar/local_contact"
-require basepath + "/cummar/application"
+require "koala"
+require "twitter"
+require "linkedin"
+require "google/api_client"
+require "instagram"
 
+require "sinatra/base"
+require "slim"
+require "compass"
+require "coffee-script"
+
+require_relative "cummar/local_contact"
+require_relative "cummar/remote_contact"
+require_relative "cummar/providers/base"
+require_relative "cummar/providers/facebook"
+require_relative "cummar/providers/twitter"
+require_relative "cummar/providers/linkedin"
+require_relative "cummar/providers/google_plus"
+require_relative "cummar/providers/instagram"
+require_relative "cummar/providers/local"
+require_relative "cummar/server"

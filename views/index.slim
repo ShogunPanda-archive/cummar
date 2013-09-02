@@ -1,0 +1,4 @@
+h3.text-center Choose the social network to update
+.text-center
+  - ["facebook", "twitter", "linkedin", "google-plus", "instagram"].each do |provider|
+    a.social href="/list/#{provider}": i class="icon-#{provider}"

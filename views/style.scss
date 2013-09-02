@@ -1,0 +1,199 @@
+@import "compass";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+// Layout
+html, body {
+  height: 100%
+}
+
+h1, h2, h3, h4, h5, h6, a, p, span, strong {
+  font-family: "Open Sans", sans-serif;
+}
+
+section {
+  min-height: 100%;
+  margin-bottom: -50px;
+}
+
+.push {
+  height: 50px;
+}
+
+.page-header{
+  margin-top: 0px;
+
+  h1{
+    font-weight: bold;
+  }
+
+  a.btn {
+    margin-top: 25px;
+  }
+}
+
+footer {
+  height: 50px;
+
+  .row {
+    border-top: 1px solid #EEE;
+    padding-top: 10px;
+  }
+}
+
+.muted{
+  color: #999;
+  font-style: italic;
+}
+
+small{
+  margin-top: 3px;
+}
+
+.message {
+  margin: 0;
+}
+
+a.social{
+  border: 2px solid transparent;
+  @include border-radius(5px);
+  @include opacity(0.3);
+  @include transition(all 0.3s ease);
+  text-decoration: none;
+  color: #10749B;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  padding: 0px;
+  margin: 20px;
+  font-size: 10rem;
+
+  &:hover{
+    background-color: #10749B;
+    color: white;
+    border-color: #0B516D;
+    @include opacity(1);
+  }
+}
+
+.contacts-container{
+  border: 2px solid #EEE;
+  @include border-radius(5px);
+  padding: 10px;
+  margin-bottom: 20px;
+  min-height: 200px;
+  max-height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+button, .input-group{
+  margin-top: 15px;
+
+  span.input-group-addon{
+    background-color: transparent;
+    color: #999;
+    padding: 6px 0 6px 6px;
+  }
+
+  input{
+    border-left: 0;
+    padding-left: 6px;
+
+    &:focus{
+      outline-style: none;
+      @include box-shadow(none);
+      border-color: #CCC;
+    }
+  }
+}
+
+.contact{
+  border: 2px solid #EEE;
+  @include border-radius(5px);
+  padding: 20px;
+  margin: 10px;
+  background-color: #F9F9F9;
+  position: relative;
+  z-index: 1;
+
+  a{
+    font-weight: bold;
+  }
+
+  h4{
+    font-weight: bold;
+    margin-top: 4px;
+  }
+
+  em{
+    font-weight: normal;
+    color: #999;
+  }
+
+  label{
+    width: 19%;
+    font-weight: normal;
+    font-size: 1.1rem;
+  }
+
+  p{
+    text-align: right;
+    font-size: 1.1rem;
+    margin: 3px 0 0 0;
+  }
+
+  hr{
+    margin: 5px 0;
+  }
+
+  .thumbnail-container{
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+
+    img{
+      width: 48px;
+      height: 48px;
+      max-width: none;
+    }
+
+    i{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      font-size: 16px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      color: white;
+      background-color: #10749B;
+      @include border-radius(3px);
+      text-align: center;
+      padding: 2px;
+      @include opacity(0.8);
+    }
+  }
+
+  .update-container{
+    min-height: 100px;
+    border: 2px dashed #CCC;
+    border-radius: 5px;
+    background-color: #FFF;
+    margin: 10px 0;
+    position: relative;
+
+    span{
+      color: #999;
+      font-size: 1.1rem;
+      text-align: center;
+      padding-top: 20px;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 0;
+    }
+  }
+}

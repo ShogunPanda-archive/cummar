@@ -1,0 +1,91 @@
+.row
+  .col-xs-6
+    .row
+      .col-xs-4
+        h3 Local contacts
+      .col-xs-5
+        .input-group
+          span.input-group-addon: i.icon-search
+          input@contacts-search.form-control data-contacts-type="local" type="text" placeholder="Search"
+      .col-xs-2
+        button@save-button.btn.btn-success.disabled class="submit" Save changes
+
+
+    @contacts.contacts-container data-contacts-type="local"
+      - @local_contacts.each do |contact|
+        @contact.contact data-id=contact.id data-tag=contact.full_name.downcase
+          .row
+            .col-xs-2
+              .thumbnail-container
+                img.img-thumbnail src=(contact.has_photo? ? contact.photo_url : "")
+                i.icon-apple
+            .col-xs-10
+              h4 == contact.full_name
+              - ["facebook", "twitter", "linkedin", "google_plus", "instagram"].each do |field|
+                - if contact.send("has_#{field}?")
+                  - label = @provider.format_provider(field)
+                  h6
+                    = label
+                    | :&nbsp;
+                    a href=contact.social_profiles[label] target="_blank" = contact.send(field)
+              - if contact.has_website?
+                h6
+                  | Website:&nbsp;
+                  a href=contact.website target="_blank" = contact.website
+              - if contact.has_birthday?
+                h6
+                  | Birthday:&nbsp;
+                  strong = contact.format_birthday
+          hr
+
+          @update-container.update-container
+            span Drag the new remote contact information card here
+
+          .row
+            .col-xs-2.muted: p Update:
+            .col-xs-10
+              - @provider.supported_fields.each do |field|
+                label
+                  input type="checkbox" checked=(field == "social" ? "checked" : nil) data-contact-switch=field
+                  | &nbsp;#{field == "social" ? @provider.name : field.capitalize}
+
+  .col-xs-6
+    .row
+      .col-xs-7
+        h3 Remote contacts
+      .col-xs-5
+        .input-group.text-right
+          span.input-group-addon: i.icon-search
+          input@contacts-search.form-control data-contacts-type="remote" type="text" placeholder="Search"
+
+    @contacts.contacts-container data-contacts-type="remote"
+      - @remote_contacts.each do |contact|
+        @contact.contact data=contact.as_json data-tag=contact.name.downcase
+          .row
+            .col-xs-2
+              .thumbnail-container
+                img.img-thumbnail src=contact.photo
+                i class="icon-#{@provider.tag}"
+            .col-xs-10
+              h4 == contact.name
+              h6
+                | #{@provider.name}:&nbsp;
+                a href=@provider.profile_for(contact) target="_blank" = contact.nick
+              - if contact.has_website?
+                h6
+                  | Website:&nbsp;
+                  a href=contact.website target="_blank" = contact.website
+              - if contact.has_birthday?
+                h6
+                  | Birthday:&nbsp;
+                  strong = contact.format_birthday
+
+  form method="POST" action="/update/#{@provider.tag}"
+    input type="hidden" name="updates"
+
+  script src="//sugarjs.com/download" type="text/javascript" charset="utf-8"
+  script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" type="text/javascript" charset="utf-8"
+  script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js" type="text/javascript" charset="utf-8"
+  script src="/list.js" type="text/javascript" charset="utf-8"
+  javascript:
+    Cummar.supported_fields = #{{@provider.supported_fields.to_json}};
