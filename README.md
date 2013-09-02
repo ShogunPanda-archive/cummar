@@ -16,7 +16,7 @@ Launch the application:
 
 `./bin/cummar`
 
-and then continue in your browser.
+and then continue in your browser opening `http://localhost:7781`.
 
 ## Contributing to cummar
  

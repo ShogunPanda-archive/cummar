@@ -26,6 +26,7 @@ require "slim"
 require "compass"
 require "coffee-script"
 
+require_relative "cummar/version" if !defined?(Cummar::Version)
 require_relative "cummar/local_contact"
 require_relative "cummar/remote_contact"
 require_relative "cummar/providers/base"
