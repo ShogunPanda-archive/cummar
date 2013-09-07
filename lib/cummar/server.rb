@@ -46,8 +46,6 @@ module Cummar
       end
 
       Compass.configuration do |config|
-        config.project_path = ROOT + "views"
-        config.sass_dir = ROOT + "views"
         config.output_style = :compact
         config.line_comments = false
       end
