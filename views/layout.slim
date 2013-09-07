@@ -2,13 +2,11 @@ doctype html
 html
   head
     title Cummar
-
-    link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css" type="text/css"
-    link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" type="text/css"
     link rel="stylesheet" href="/style.css" type="text/css"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
+
   body
-    section
+    article.root
       .container
         .page-header
           .row
@@ -18,13 +16,28 @@ html
             .col-sm-4.col-xs-6.text-right
               a.btn.btn-primary href="/" Home
         == yield
-        .push
+        .footer-push
     footer
       .container
         .row
           .col-sm-6
-            | &copy; 2013 and above Shogun &lt;
-            a href="mailto:shogun@cowtech.it" shogun@cowtech.it
-            | &gt;
-          .col-sm-6.text-right
-            a href="http://cowtech.it" http://cowtech.it
+            span
+              ' &copy; 2013 and above
+              strong< Shogun
+          .col-sm-6.text-right.links
+            a href="http://github.com/ShogunPanda"
+              i.icon-github
+              | ShogunPanda
+            a href="http://cowtech.it"
+              i.icon-globe
+              | http://cowtech.it
+            a href="mailto:shogun@cowtech.it"
+              i.icon-envelope
+              | shogun@cowtech.it
+
+    div.ribbon.ribbon-top-right
+      a href="http://github.com/ShogunPanda/cummar" target="_blank": span Fork me on GitHub
+
+    div.ribbon.ribbon-bottom-right.italy
+      a href="http://www.italia.it" target="_blank": span Made by a proud Italian
+

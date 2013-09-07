@@ -1,21 +1,38 @@
-@import "compass";
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+//
+// This file is part of cummar. Copyright (C) 2013 and above Shogun <shogun@cowtech.it>.
+// Licensed under the MIT license, which can be found at http://www.opensource.org/licenses/mit-license.php.
+//
+
+@import "ribbon";
+@import url(//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css);
+@import url(//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css);
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+@import url(//fonts.googleapis.com/css?family=Ubuntu:400,700);
+
+@import "compass/css3/box-sizing";
+@import "compass/css3/border-radius";
+@import "compass/css3/text-shadow";
+@import "compass/css3/box-shadow";
+@import "compass/css3/opacity";
+@import "compass/css3/transition";
+@import "compass/css3/images";
 
 // Layout
-html, body {
+html, body{
   height: 100%
 }
 
-h1, h2, h3, h4, h5, h6, a, p, span, strong {
-  font-family: "Open Sans", sans-serif;
+h1, h2, h3, h4, h5, h6, a, p, strong, em {
+  font-family: Ubuntu, serif;
 }
 
-section {
+article.root {
   min-height: 100%;
   margin-bottom: -50px;
 }
 
-.push {
+.footer-push {
+  margin-top: 50px;
   height: 50px;
 }
 
@@ -34,9 +51,34 @@ section {
 footer {
   height: 50px;
 
-  .row {
-    border-top: 1px solid #EEE;
+  .container{
+    border-top: 1px solid #CCC;
     padding-top: 10px;
+  }
+
+  .links{
+    a{
+      margin-left: 3em;
+      position: relative;
+
+      i{
+        @include opacity(0.5);
+        @include transition(opacity 0.3s ease);
+        color: #333;
+        padding-right: 10px;
+        font-size: 1.3em;
+        position: absolute;
+        top: -0.05em;
+        left: -1.4em;
+      }
+
+      &:hover{
+        i{
+          text-decoration: none;
+          @include opacity(1);
+        }
+      }
+    }
   }
 }
 
@@ -49,8 +91,29 @@ small{
   margin-top: 3px;
 }
 
-.message {
-  margin: 0;
+.alert{
+  .message{
+    margin: 0;
+  }
+}
+
+.panel{
+  .panel-heading{
+    h3, h4{
+      margin: 0;
+    }
+  }
+
+  .panel-body{
+    .message{
+      margin: 0;
+    }
+
+    .btn{
+      position: relative;
+      top: -2px;
+    }
+  }
 }
 
 a.social{
@@ -194,6 +257,53 @@ button, .input-group{
       left: 0;
       width: 100%;
       z-index: 0;
+    }
+  }
+}
+
+.ribbon{
+  &.ribbon-top-right{
+    @include ribbon;
+  }
+
+  &.ribbon-bottom-right{
+    @include ribbon("bottom-right");
+  }
+
+  a{
+    color: white;
+    font-family: "Ubuntu", serif;
+    font-weight: normal;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 1px;
+    background-color: #A00;
+    @include box-shadow(0 0 0.5em #888);
+    @include text-shadow(0 0 0.5em #444);
+
+    span{
+      border: 1px dashed white;
+      border-left: 0;
+      border-right: 0;
+      padding: 0.25em 0;
+      font-size: 0.85em;
+      display: block;
+      height: 100%;
+      @include box-sizing(border-box);
+    }
+  }
+
+  &.italy{
+    a{
+      @include background(none, linear-gradient(left, #009246, #009246 34%, #F1F2F1 34%, #F1F2F1 66%, #CE2B37 66%));
+      color: black;
+      font-weight: bold;
+      @include text-shadow(none);
+
+      span{
+        border-color: #000;
+      }
     }
   }
 }

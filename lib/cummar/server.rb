@@ -33,13 +33,6 @@ module Cummar
     end
 
     configure do
-      set(:sessions, true)
-      set(:port, 7781)
-      set(:views, ROOT + "views")
-      set(:public_dir, ROOT + "views")
-      set(:show_exceptions, false)
-      set(:dump_errors, false)
-
       use(OmniAuth::Builder) do
         provider(:facebook, CONFIGURATION["facebook"]["app_key"], CONFIGURATION["facebook"]["app_secret"])
         provider(:twitter, CONFIGURATION["twitter"]["app_key"], CONFIGURATION["twitter"]["app_secret"])
@@ -55,21 +48,37 @@ module Cummar
       Compass.configuration do |config|
         config.project_path = ROOT + "views"
         config.sass_dir = ROOT + "views"
+        config.output_style = :compact
+        config.line_comments = false
       end
 
-      Slim::Engine.set_default_options(shortcut: { "@" => {attr: "data-role"}, "#" => {attr: "id"}, "." => {attr: "class"}}, pretty: true, sort_attrs: true, tabsize: 2)
+      Slim::Engine.set_default_options({
+        shortcut: { "@" => {attr: "data-role"}, "#" => {attr: "id"}, "." => {attr: "class"}}, pretty: true, sort_attrs: true, tabsize: 2}
+      )
+
+      set(:sessions, true)
+      set(:port, 7781)
+      set(:views, ROOT + "views")
+      set(:public_dir, ROOT + "views")
+      set(:show_exceptions, false)
+      set(:dump_errors, false)
+      set(:scss, Compass.sass_engine_options)
     end
 
     not_found do
       @code = 404
       @title = "Request Not Found"
       @message = "The request your asked for was not found."
+
+      status(@code)
       slim(:error, layout: :layout)
     end
 
     error(403) do
       @code = 403
       @title = "Authorization denied"
+
+      status(@code)
       slim(:error, layout: :layout)
     end
 
@@ -77,6 +86,8 @@ module Cummar
       @code = 406
       @title = "Invalid social network"
       @message = "The social network you asked for is invalid."
+
+      status(@code)
       slim(:error, layout: :layout)
     end
 
@@ -85,22 +96,28 @@ module Cummar
       @code = 500
 
       if @exception.is_a?(RuntimeError) then
+        @code = 200
+
         if Cummar::Server.to_boolean(params[:raw]) then
           content_type("text/javascript", charset: "utf-8")
+          status(@code)
           @exception.message
         else
+          status(@code)
           slim(:debug, layout: :layout)
         end
       else
         @title = @exception_title || "Error occurred"
         @message = "[#{@exception.class.to_s}] #{@exception.message}"
+
+        status(@code)
         slim(:error, layout: :layout)
       end
     end
 
     get "/style.css" do
       content_type("text/css", charset: "utf-8")
-      scss(:style, Compass.sass_engine_options.merge({style: :compact, debug_info: false}))
+      scss(:style)
     end
 
     get "/list.js" do
@@ -143,7 +160,7 @@ module Cummar
         if @provider.has_authentication_data? then
           @local_contacts = Cummar::Server.load_provider("local").contacts
           @remote_contacts = @provider.contacts
-          slim :list, layout: :layout
+          slim(:list, layout: :layout)
         else
           redirect("/auth/#{params[:provider]}")
         end
@@ -157,7 +174,7 @@ module Cummar
         begin
           Cummar::Server.load_provider(params[:provider], false) # This is only for check that the specified provider exists.
           @updates = Cummar::Server.load_provider("local").update(params[:provider], params[:updates])
-          slim :update, layout: :layout
+          slim(:update, layout: :layout)
         rescue Cummar::InvalidProvider
           halt(404)
         end
