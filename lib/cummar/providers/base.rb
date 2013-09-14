@@ -66,6 +66,11 @@ module Cummar
           data && Time.now.to_f < data[:timestamp] + data[:ttl]
         end
 
+        def store_oauth(auth_data)
+          configuration["token"] = auth_data["credentials"]["token"]
+          configuration["token_secret"] = auth_data["credentials"]["secret"]
+        end
+
         def sort(contacts)
           contacts.sort {|first, second|
             cmp = first.name.downcase <=> second.name.downcase

@@ -35,16 +35,8 @@ module Cummar
           if !@contacts then
             client = get_client
             plus = client.discovered_api("plus", "v1")
-            contacts = []
-            token = ""
 
-            while token do
-              data = client.execute!(plus.people.list, {mapion: "visible", userId: "me", maxResults: 100, orderBy: "alphabetical", pageToken: token}).data
-              token = data["nextPageToken"]
-              contacts += data["items"]
-            end
-
-            @contacts = sort(contacts.map {|person| build_contact(client, plus, person) }.compact)
+            @contacts = sort(fetch_contacts(client, plus).map {|person| build_contact(client, plus, person) }.compact)
             write_cache(@contacts)
           end
 
@@ -79,6 +71,19 @@ module Cummar
 
           authorization.fetch_access_token!
           authorization
+        end
+
+        def fetch_contacts(client, plus)
+          rv = []
+          token = ""
+
+          while token do
+            data = client.execute!(plus.people.list, {collection: "visible", userId: "me", maxResults: 100, orderBy: "alphabetical", pageToken: token}).data
+            token = data["nextPageToken"]
+            rv += data["items"]
+          end
+
+          rv
         end
 
         def build_contact(client, plus, user)

@@ -16,18 +16,17 @@ module Cummar
       end
 
       def save_authentication(auth_data)
-        configuration["token"] = auth_data["credentials"]["token"]
-        configuration["token_secret"] = auth_data["credentials"]["secret"]
+        store_oauth(auth_data)
         save_configuration("twitter", configuration)
       end
 
       def contacts
         begin
-          @contacts = read_cache("twitter")
+          @contacts = read_cache
 
           if !@contacts then
             @contacts = sort(get_client.friends.map {|friend| build_contact(friend) })
-            write_cache("twitter", @contacts)
+            write_cache(@contacts)
           end
 
           @contacts

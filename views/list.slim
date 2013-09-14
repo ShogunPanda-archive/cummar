@@ -10,7 +10,6 @@
       .col-xs-2
         button@save-button.btn.btn-success.disabled class="submit" Save changes
 
-
     @contacts.contacts-container data-contacts-type="local"
       - @local_contacts.each do |contact|
         @contact.contact data-id=contact.id data-tag=contact.full_name.downcase

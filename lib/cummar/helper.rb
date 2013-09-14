@@ -31,24 +31,25 @@ module Cummar
     def save
       provider = ARGV[1]
 
+      puts "Starting updates of contacts ..."
+
       Cummar::LocalContact.load_addressbook(address_book, false).each do |id, contact|
-        if updates[id] then
-          puts "Starting updates of contacts ..."
+        update_contact(contact, updates[id]) if updates[id]
+      end
 
-          update = updates[id]
-          puts "  Updating #{contact.full_name} ..."
+      address_book.save
+      puts "Operation completed."
+    end
 
-          ["social", "website", "photo", "birthday"].each do |field|
-            key, value = parse_field(provider, field, update[field])
+    def update_contact(contact, update)
+      puts "  Updating #{contact.full_name} ..."
 
-            if value then
-              puts "    Updating #{format_field(key)} to be \"#{format_value(field, value)}\" ..."
-              contact.send("update_#{field}", self, value, provider)
-            end
-          end
+      ["social", "website", "photo", "birthday"].each do |field|
+        key, value = parse_field(provider, field, update[field])
 
-          address_book.save
-          puts "Operation completed."
+        if value then
+          puts "    Updating #{format_field(key)} to be \"#{format_value(field, value)}\" ..."
+          contact.send("update_#{field}", self, value, provider)
         end
       end
     end

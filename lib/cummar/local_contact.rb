@@ -30,42 +30,7 @@ module Cummar
     end
 
     def initialize(record)
-      if record.is_a?(Hash) then
-        @id = record[:id]
-        @first_name = record[:first_name]
-        @last_name = record[:last_name]
-        @nick = record[:nick]
-        @birthday = record[:birthday]
-        @company = record[:company]
-        @is_company = Cummar::Server.to_boolean(record[:is_company])
-        @facebook = record[:facebook]
-        @twitter = record[:twitter]
-        @linkedin = record[:linkedin]
-        @google_plus = record[:google_plus]
-        @instagram = record[:instagram]
-        @social_profiles = record[:social_profiles]
-        @website = record[:website]
-        @photo = record[:photo]
-      else
-        @record = record
-        @id = read_property(record, KABUIDProperty, false).gsub(":ABPerson", "")
-        @first_name = read_property(record, KABFirstNameProperty)
-        @last_name = read_property(record, KABLastNameProperty)
-        @nick = read_property(record, KABNicknameProperty)
-        @company = read_property(record, KABOrganizationProperty)
-        @is_company = read_property(record, KABPersonFlags, false) & KABShowAsCompany > 0
-        @social = read_property(record, KABSocialProfileProperty, false)
-        @facebook = social_username_for("Facebook")
-        @twitter = social_username_for("Twitter")
-        @linkedin = social_username_for("LinkedIn")
-        @google_plus = social_username_for("Google+")
-        @instagram = social_username_for("Instagram")
-        @social_profiles = fetch_social_profiles
-        @website = ABMultiValueCopyValueAtIndex(read_property(record, KABURLsProperty, false), 0)
-        @photo = photo_from_record(record)
-        @birthday = read_property(record, KABBirthdayProperty, false)
-        @birthday = @birthday.utc.to_date if @birthday
-      end
+      record.is_a?(Hash) ? initialize_from_hash(record) : initialize_from_record(record)
     end
 
     def method_missing(method, *args, &block)
@@ -73,11 +38,9 @@ module Cummar
     end
 
     def full_name(html = true)
-      if html
-        !is_company ? [first_name, (nick ? "<em>\"#{nick}\"</em>" : nil), last_name, (company ? "(#{company})" : nil)].compact.join(" ") : "#{company} <em>(Company)</em>"
-      else
-        !is_company ? [first_name, (nick ? "\"#{nick}\"" : nil), last_name, (company ? "(#{company})" : nil)].compact.join(" ") : "#{company} (Company)"
-      end
+      rv = !is_company ? [first_name, (nick ? "<em>\"#{nick}\"</em>" : nil), last_name, (company ? "(#{company})" : nil)].compact.join(" ") : "#{company} <em>(Company)</em>"
+      rv.gsub!(/<\/?em>/, "") if !html
+      rv
     end
 
     def photo_url
@@ -91,7 +54,6 @@ module Cummar
     def update_social(helper, value, provider)
       service, value, social = prepare_social_update(helper, provider, value)
 
-      p value
       if social then
         social = social.mutableCopy
         perform_social_update(social, service, value)
@@ -130,6 +92,50 @@ module Cummar
     end
 
     private
+      def initialize_from_hash(record)
+        @id = record[:id]
+        @first_name = record[:first_name]
+        @last_name = record[:last_name]
+        @nick = record[:nick]
+        @birthday = record[:birthday]
+        @company = record[:company]
+        @is_company = Cummar::Server.to_boolean(record[:is_company])
+        @facebook = record[:facebook]
+        @twitter = record[:twitter]
+        @linkedin = record[:linkedin]
+        @google_plus = record[:google_plus]
+        @instagram = record[:instagram]
+        @social_profiles = record[:social_profiles]
+        @website = record[:website]
+        @photo = record[:photo]
+      end
+
+      def initialize_from_record(record)
+        @record = record
+        @id = read_property(record, KABUIDProperty, false).gsub(":ABPerson", "")
+        @first_name = read_property(record, KABFirstNameProperty)
+        @last_name = read_property(record, KABLastNameProperty)
+        @nick = read_property(record, KABNicknameProperty)
+        @company = read_property(record, KABOrganizationProperty)
+        @is_company = read_property(record, KABPersonFlags, false) & KABShowAsCompany > 0
+        @website = ABMultiValueCopyValueAtIndex(read_property(record, KABURLsProperty, false), 0)
+        @photo = photo_from_record(record)
+        @birthday = read_property(record, KABBirthdayProperty, false)
+        @birthday = @birthday.utc.to_date if @birthday
+        initialize_social_profiles(record)
+      end
+
+      def initialize_social_profiles(record)
+        @social = read_property(record, KABSocialProfileProperty, false)
+        @facebook = social_username_for("Facebook")
+        @twitter = social_username_for("Twitter")
+        @linkedin = social_username_for("LinkedIn")
+        @google_plus = social_username_for("Google+")
+        @instagram = social_username_for("Instagram")
+        @social_profiles = fetch_social_profiles
+
+      end
+
       def read_property(record, key, strip = true)
         rv = record.valueForProperty(key)
         rv = rv.strip if rv && strip
@@ -144,7 +150,7 @@ module Cummar
           end
 
           nil
-        }    
+        }
       end
 
       def fetch_social_profiles
@@ -173,9 +179,7 @@ module Cummar
 
       def profile_for(helper, provider, username)
         case provider
-          when "facebook" then "http://www.facebook.com/#{username}"
-          when "twitter" then "http://www.twitter.com/#{username}"
-          when "instagram" then "http://www.instagram.com/#{username}"
+          when "facebook", "twitter", "instagram" then "http://www.#{provider}.com/#{username}"
           when "linkedin" then
             record = find_record(helper, username)
             record["record"]["public_profile_url"]

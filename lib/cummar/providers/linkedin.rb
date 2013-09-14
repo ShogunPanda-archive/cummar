@@ -16,8 +16,7 @@ module Cummar
       end
 
       def save_authentication(auth_data)
-        configuration["token"] = auth_data["credentials"]["token"]
-        configuration["token_secret"] = auth_data["credentials"]["secret"]
+        store_oauth(auth_data)
         save_configuration("linkedin", configuration)
       end
 
@@ -27,22 +26,7 @@ module Cummar
 
           if !@contacts then
             client = get_client
-            contacts = []
-            start = 0
-            count = 100
-
-            while start do
-              connections = client.connections(fields: ["id", "formatted-name", "picture-url", "public-profile-url"], start: start, count: count)["all"]
-
-              if connections then
-                contacts += connections
-                start += count
-              else
-                start = nil
-              end
-            end
-
-            @contacts = sort(contacts.map {|connection| build_contact(connection) }.compact)
+            @contacts = sort(fetch_contacts(client).map {|connection| build_contact(connection) }.compact)
             write_cache(@contacts)
           end
 
@@ -66,6 +50,25 @@ module Cummar
           client = ::LinkedIn::Client.new(configuration["app_key"], configuration["app_secret"])
           client.authorize_from_access(configuration["token"], configuration["token_secret"])
           client
+        end
+
+        def fetch_contacts(client)
+          rv = []
+          start = 0
+          count = 100
+
+          while start do
+            connections = client.connections(fields: ["id", "formatted-name", "picture-url", "public-profile-url"], start: start, count: count)["all"]
+
+            if connections then
+              rv += connections
+              start += count
+            else
+              start = nil
+            end
+          end
+
+          rv
         end
 
         def build_contact(user)

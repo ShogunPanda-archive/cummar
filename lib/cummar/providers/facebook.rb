@@ -22,22 +22,8 @@ module Cummar
 
           if !@contacts then
             client = get_client
-            contacts = []
-            offset = 0
-            limit = 100
 
-            while offset do
-              friends = client.get_connection("me", "friends", {offset: offset, limit: limit}).map {|friend| friend["id"] }
-
-              if friends.present? then
-                contacts += friends
-                offset += limit
-              else
-                offset = nil
-              end
-            end
-
-            @contacts = sort(client.get_objects(contacts, {fields: "id,name,username,birthday,picture.type(large),website"}).map {|_, friend|
+            @contacts = sort(client.get_objects(fetch_contacts(client), {fields: "id,name,username,birthday,picture.type(large),website"}).map {|_, friend|
               build_contact(friend)
             })
 
@@ -58,6 +44,25 @@ module Cummar
       private
         def get_client
           Koala::Facebook::API.new(configuration["token"])
+        end
+
+        def fetch_contacts(client)
+          rv = []
+          offset = 0
+          limit = 100
+
+          while offset do
+            friends = client.get_connection("me", "friends", {offset: offset, limit: limit}).map {|friend| friend["id"] }
+
+            if friends.present? then
+              rv += friends
+              offset += limit
+            else
+              offset = nil
+            end
+          end
+
+          rv
         end
 
         def build_contact(user)

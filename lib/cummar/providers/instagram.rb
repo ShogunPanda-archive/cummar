@@ -25,16 +25,8 @@ module Cummar
           @contacts = read_cache
 
           if !@contacts then
-            contacts = []
-            cursor = ""
-
-            while cursor do
-              follows = client.user_follows(nil, cursor: cursor, count: 100)
-              contacts += follows
-              cursor = follows.pagination.next_cursor
-            end
-
-            @contacts = sort(contacts.map{|follow| build_contact(follow)})
+            client = get_client
+            @contacts = sort(fetch_contacts(client).map{|follow| build_contact(follow)})
 
             write_cache(@contacts)
           end
@@ -51,8 +43,21 @@ module Cummar
       end
 
       private
-        def client
+        def get_client
           ::Instagram.client(access_token: configuration["token"])
+        end
+
+        def fetch_contacts(client)
+          rv = []
+          cursor = ""
+
+          while cursor do
+            follows = client.user_follows(nil, cursor: cursor, count: 100)
+            rv += follows
+            cursor = follows.pagination.next_cursor
+          end
+
+          rv
         end
 
         def build_contact(user)
