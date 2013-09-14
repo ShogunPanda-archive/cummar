@@ -33,3 +33,7 @@ and then continue in your browser opening `http://localhost:7781`.
 Copyright (C) 2013 and above Shogun (shogun@cowtech.it).
 
 Licensed under the MIT license, which can be found at http://www.opensource.org/licenses/mit-license.php.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ShogunPanda/cummar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
