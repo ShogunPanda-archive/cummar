@@ -4,6 +4,8 @@ A small application to merge your friends' social profiles contacts into OSX add
 
 http://sw.cow.tc/cummar
 
+[![Bitdeli Trend](https://d2weczhvl823v0.cloudfront.net/ShogunPanda/cummar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 ## Installation
 
 You need to install [MacRuby](http://www.macruby.org), then run `bundle install`.
