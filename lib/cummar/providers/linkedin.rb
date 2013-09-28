@@ -17,7 +17,7 @@ module Cummar
 
       def save_authentication(auth_data)
         store_oauth(auth_data)
-        save_configuration("linkedin", configuration)
+        save_configuration(configuration)
       end
 
       def contacts
@@ -72,19 +72,25 @@ module Cummar
         end
 
         def build_contact(user)
+          id = user["id"]
+
           nick = if user["public_profile_url"] then
             user["public_profile_url"].gsub(/#{Regexp.quote("http://www.linkedin.com/")}[^\/]+\/([^\/]+)(\/.+)?/, "\\1")
           else
-            user["id"]
+            id
           end
 
-          user["id"] != "private" ? Cummar::RemoteContact.new(user, "linkedin", user["id"], user["formatted_name"], nick, nil, user["picture_url"]) : nil
+          if id != "private" then
+            Cummar::RemoteContact.new(record: user, provider: "linkedin", id: id, name: user["formatted_name"], nick: nick, photo: user["picture_url"])
+          else
+            nil
+          end
         end
 
         def clear_authentication
           configuration["token"] = ""
           configuration["token_secret"] = ""
-          save_configuration("linkedin", configuration)
+          save_configuration(configuration)
         end
     end
   end

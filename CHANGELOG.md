@@ -1,3 +1,7 @@
+### 1.0.4 / 2013-09-28
+
+* Improved code metrics.
+
 ### 1.0.3 / 2013-09-14
 
 * Improved code metrics.

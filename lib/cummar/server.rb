@@ -37,7 +37,10 @@ module Cummar
         provider(:facebook, CONFIGURATION["facebook"]["app_key"], CONFIGURATION["facebook"]["app_secret"])
         provider(:twitter, CONFIGURATION["twitter"]["app_key"], CONFIGURATION["twitter"]["app_secret"])
         provider(:linkedin, CONFIGURATION["linkedin"]["app_key"], CONFIGURATION["linkedin"]["app_secret"], scope: "r_fullprofile r_emailaddress r_network")
-        provider(:google_oauth2, CONFIGURATION["google_plus"]["app_key"], CONFIGURATION["google_plus"]["app_secret"], name: "google-plus", scope: "plus.login", access_type: "offline", prompt: "consent")
+        provider(
+          :google_oauth2, CONFIGURATION["google_plus"]["app_key"], CONFIGURATION["google_plus"]["app_secret"],
+          name: "google-plus", scope: "plus.login", access_type: "offline", prompt: "consent"
+        )
         provider(:instagram, CONFIGURATION["instagram"]["app_key"], CONFIGURATION["instagram"]["app_secret"])
 
         OmniAuth.config.on_failure = Proc.new { |env|

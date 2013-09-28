@@ -47,7 +47,7 @@ module Cummar
           @configuration ||= YAML.load_file(configuration_path).fetch(configuration_section)
         end
 
-        def save_configuration(section, new_data)
+        def save_configuration(new_data)
           data = YAML.load_file(configuration_path)
           data[configuration_section] = (data[configuration_section] || {}).merge(new_data)
           open(configuration_path, "w") {|f| f.write(YAML.dump(data)) }

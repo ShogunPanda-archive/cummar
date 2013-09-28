@@ -17,7 +17,7 @@ module Cummar
 
       def save_authentication(auth_data)
         configuration["token"] = auth_data["credentials"]["token"]
-        save_configuration("instagram", configuration)
+        save_configuration(configuration)
       end
 
       def contacts
@@ -63,12 +63,15 @@ module Cummar
         def build_contact(user)
           name = user["full_name"]
           name = user["username"] if name.blank?
-          Cummar::RemoteContact.new(user, "instagram", user["id"], name, user["username"], user["website"], user["profile_picture"])
+          Cummar::RemoteContact.new(
+            record: user, provider: "instagram", id: user["id"], name: name, nick: user["username"],
+            website: user["website"], photo: user["profile_picture"]
+          )
         end
 
         def clear_authentication
           configuration["token"] = ""
-          save_configuration("instagram", configuration)
+          save_configuration(configuration)
         end
     end
   end

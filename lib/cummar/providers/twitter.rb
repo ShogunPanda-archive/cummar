@@ -17,7 +17,7 @@ module Cummar
 
       def save_authentication(auth_data)
         store_oauth(auth_data)
-        save_configuration("twitter", configuration)
+        save_configuration(configuration)
       end
 
       def contacts
@@ -49,13 +49,16 @@ module Cummar
         end
 
         def build_contact(user)
-          Cummar::RemoteContact.new(user, "twitter", user["id"], user["name"], user["screen_name"], user["url"], user["profile_image_url"])
+          Cummar::RemoteContact.new(
+            record: user, provider: "twitter", id: user["id"], name: user["name"], nick: user["screen_name"],
+            website: user["url"], photo: user["profile_image_url"]
+          )
         end
 
         def clear_authentication
           configuration["token"] = ""
           configuration["token_secret"] = ""
-          save_configuration("twitter", configuration)
+          save_configuration(configuration)
         end
     end
   end

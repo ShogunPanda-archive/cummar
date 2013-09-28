@@ -8,15 +8,15 @@ module Cummar
   class RemoteContact
     attr_reader :id, :provider, :name, :nick, :birthday, :website, :photo, :record
 
-    def initialize(record, provider, id, name = "", nick = "", website = nil, photo = nil, birthday = nil)
-      @record = record
-      @provider = provider
-      @id = id
-      @name = name
-      @nick = nick
-      @birthday = birthday
-      @website = website
-      @photo = photo
+    def initialize(attrs = {})
+      @record = attrs[:record]
+      @provider = attrs[:provider]
+      @id = attrs[:id]
+      @name = attrs[:name] || ""
+      @nick = attrs[:nick] || ""
+      @birthday = attrs[:birthday]
+      @website = attrs[:website]
+      @photo = attrs[:photo]
     end
 
     def method_missing(method, *args, &block)

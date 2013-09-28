@@ -13,7 +13,7 @@ module Cummar
 
       def save_authentication(auth_data)
         configuration["token"] = auth_data["credentials"]["token"]
-        save_configuration("facebook", configuration)
+        save_configuration(configuration)
       end
 
       def contacts
@@ -67,8 +67,8 @@ module Cummar
 
         def build_contact(user)
           Cummar::RemoteContact.new(
-            user, "facebook", user["id"], user["name"], user["username"], user["website"],
-            user["picture"]["data"]["url"], parse_birthday(user["birthday"])
+            record: user, provider: "facebook", id: user["id"], name: user["name"], nick: user["username"],
+            website: user["website"], photo: user["picture"]["data"]["url"], birthday: parse_birthday(user["birthday"])
           )
         end
 
@@ -83,7 +83,7 @@ module Cummar
 
         def clear_authentication
           configuration["token"] = ""
-          save_configuration("facebook", configuration)
+          save_configuration(configuration)
         end
     end
   end

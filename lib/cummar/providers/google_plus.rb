@@ -25,7 +25,7 @@ module Cummar
 
       def save_authentication(auth_data)
         configuration["token"] = auth_data["credentials"]["refresh_token"]
-        save_configuration("google_plus", configuration)
+        save_configuration(configuration)
       end
 
       def contacts
@@ -93,7 +93,7 @@ module Cummar
           profile = client.execute!(plus.people.get, {userId: id}).data
           birthday = parse_birthday(profile["birthday"])
 
-          Cummar::RemoteContact.new(profile, "google_plus", id, name, id, nil, picture, birthday)
+          Cummar::RemoteContact.new(record: profile, provider: "google_plus", id: id, name: name, nick: id, photo: picture, birthday: birthday)
         end
 
         def parse_birthday(birthday)
@@ -102,7 +102,7 @@ module Cummar
 
         def clear_authentication
           configuration["token"] = ""
-          save_configuration("google_plus", configuration)
+          save_configuration(configuration)
         end
     end
   end

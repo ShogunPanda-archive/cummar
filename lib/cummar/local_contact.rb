@@ -6,7 +6,8 @@
 
 module Cummar
   class LocalContact
-    attr_reader :id, :first_name, :last_name, :nick, :birthday, :company, :is_company, :facebook, :twitter, :linkedin, :google_plus, :instagram, :website, :photo, :social_profiles
+    attr_reader :id, :first_name, :last_name, :nick, :birthday, :company, :is_company
+    attr_reader :facebook, :twitter, :linkedin, :google_plus, :instagram, :website, :photo, :social_profiles
 
     def self.load_addressbook(address_book, json = true)
       # Load and sort contacts
@@ -38,7 +39,12 @@ module Cummar
     end
 
     def full_name(html = true)
-      rv = !is_company ? [first_name, (nick ? "<em>\"#{nick}\"</em>" : nil), last_name, (company ? "(#{company})" : nil)].compact.join(" ") : "#{company} <em>(Company)</em>"
+      rv = if !is_company then
+        [first_name, (nick ? "<em>\"#{nick}\"</em>" : nil), last_name, (company ? "(#{company})" : nil)].compact.join(" ")
+      else
+        "#{company} <em>(Company)</em>"
+      end
+
       rv.gsub!(/<\/?em>/, "") if !html
       rv
     end
@@ -118,7 +124,7 @@ module Cummar
         @nick = read_property(record, KABNicknameProperty)
         @company = read_property(record, KABOrganizationProperty)
         @is_company = read_property(record, KABPersonFlags, false) & KABShowAsCompany > 0
-        @website = ABMultiValueCopyValueAtIndex(read_property(record, KABURLsProperty, false), 0)
+        @website = website_from_record(record)
         @photo = photo_from_record(record)
         @birthday = read_property(record, KABBirthdayProperty, false)
         @birthday = @birthday.utc.to_date if @birthday
@@ -133,7 +139,6 @@ module Cummar
         @google_plus = social_username_for("Google+")
         @instagram = social_username_for("Instagram")
         @social_profiles = fetch_social_profiles
-
       end
 
       def read_property(record, key, strip = true)
@@ -175,6 +180,10 @@ module Cummar
         else
           nil
         end
+      end
+
+      def website_from_record(record)
+        ABMultiValueCopyValueAtIndex(read_property(record, KABURLsProperty, false), 0)
       end
 
       def profile_for(helper, provider, username)
