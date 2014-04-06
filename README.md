@@ -5,6 +5,7 @@ A small application to merge your friends' social profiles contacts into OSX add
 http://sw.cow.tc/cummar
 
 [![Bitdeli Trend](https://d2weczhvl823v0.cloudfront.net/ShogunPanda/cummar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+<iframe src="http://ghbtns.com/github-btn.html?user=ShogunPanda&repo=cummar&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="135" height="20"></iframe>
 
 ## Installation
 
