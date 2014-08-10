@@ -2,7 +2,7 @@
 
 A small application to merge your friends' social profiles contacts into OSX address book.
 
-http://sw.cow.tc/cummar
+http://sw.cowtech.it/cummar
 
 [![Bitdeli Trend](https://d2weczhvl823v0.cloudfront.net/ShogunPanda/cummar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
