@@ -1,4 +1,9 @@
+Gemfile.lock
+tester.rb
+coverage/
+pkg/
 .idea/
+.yardoc/
+.bundle
 config.yml
 .sass-cache/
-metrics/
