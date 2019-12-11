@@ -5,7 +5,7 @@
 
 source "http://rubygems.org"
 
-gem "activesupport", "< 4.0"
+gem "activesupport", "< 5.0"
 gem "sinatra", "~> 1.4.3"
 gem "moneta", "~> 0.7.19"
 
