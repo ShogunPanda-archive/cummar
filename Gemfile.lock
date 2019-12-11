@@ -87,8 +87,8 @@ GEM
     omniauth-twitter (1.0.0)
       multi_json (~> 1.3)
       omniauth-oauth (~> 1.0)
-    rack (1.5.2)
-    rack-protection (1.5.0)
+    rack (1.6.11)
+    rack-protection (1.5.5)
       rack
     sass (3.2.10)
     signet (0.4.5)
