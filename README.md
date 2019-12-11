@@ -1,8 +1,8 @@
-# Introduction
+# cummar
+
+## END OF DEVELOPMENT NOTICE - This gem has been discontinued
 
 A small application to merge your friends' social profiles contacts into OSX address book.
-
-http://sw.cowtech.it/cummar
 
 ## Installation
 
