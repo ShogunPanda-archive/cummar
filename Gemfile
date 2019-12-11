@@ -9,7 +9,7 @@ gem "activesupport", "< 4.0"
 gem "sinatra", "~> 1.4.3"
 gem "moneta", "~> 0.7.19"
 
-gem "omniauth-facebook", "~> 1.4.1"
+gem "omniauth-facebook", "~> 1.5.0"
 gem "omniauth-twitter", "~> 1.0.0"
 gem "omniauth-linkedin", "~> 0.1.0"
 gem "omniauth-google-oauth2", "~> 0.2.1"
